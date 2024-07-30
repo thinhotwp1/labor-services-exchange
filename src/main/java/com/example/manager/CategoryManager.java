@@ -20,6 +20,7 @@ public class CategoryManager {
     public void manage(Scanner scanner) {
         boolean running = true;
         while (running) {
+            System.out.println("===========================");
             System.out.println("Category Management:");
             System.out.println("1. Add Category");
             System.out.println("2. Edit Category");
@@ -81,11 +82,69 @@ public class CategoryManager {
     }
 
     private void editCategory(Scanner scanner) {
-        // Similar to addCategory, but allows editing an existing category
+        try {
+            Document doc = XMLManager.loadXML(categoriesFile);
+            Element root = XMLManager.getElementByTagName(doc, "categories");
+
+            System.out.print("Enter the name of the category to edit: ");
+            String nameToEdit = scanner.nextLine();
+
+            // Find the category to edit
+            Element categoryElement = findCategoryElement(root, nameToEdit);
+            if (categoryElement == null) {
+                System.out.println("Category not found.");
+                return;
+            }
+
+            System.out.print("Enter new category name: ");
+            String newName = scanner.nextLine();
+            System.out.print("Enter new characteristic field: ");
+            String newCharacteristicField = scanner.nextLine();
+
+            // Update the category details
+            categoryElement.getElementsByTagName("name").item(0).setTextContent(newName);
+            categoryElement.getElementsByTagName("characteristicField").item(0).setTextContent(newCharacteristicField);
+
+            XMLManager.saveXML(doc, categoriesFile);
+            System.out.println("Category edited successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void deleteCategory(Scanner scanner) {
-        // Similar to addCategory, but allows deleting an existing category
+        try {
+            Document doc = XMLManager.loadXML(categoriesFile);
+            Element root = XMLManager.getElementByTagName(doc, "categories");
+
+            System.out.print("Enter the name of the category to delete: ");
+            String nameToDelete = scanner.nextLine();
+
+            // Find and remove the category element
+            Element categoryElement = findCategoryElement(root, nameToDelete);
+            if (categoryElement == null) {
+                System.out.println("Category not found.");
+                return;
+            }
+
+            categoryElement.getParentNode().removeChild(categoryElement);
+
+            XMLManager.saveXML(doc, categoriesFile);
+            System.out.println("Category deleted successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Element findCategoryElement(Element root, String name) {
+        NodeList categories = root.getElementsByTagName("category");
+        for (int i = 0; i < categories.getLength(); i++) {
+            Element category = (Element) categories.item(i);
+            if (category.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
+                return category;
+            }
+        }
+        return null;
     }
 
     private void listCategories() {

@@ -22,37 +22,65 @@ public class ConsoleManager {
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
-        if (userManager.login(scanner)) {
-            boolean running = true;
-            while (running) {
-                System.out.println("Choose an option: ");
-                System.out.println("1. Manage Categories");
-                System.out.println("2. Manage Geographic Areas");
-                System.out.println("3. Manage Conversion Factors");
-                System.out.println("4. Exit");
+        boolean loggedIn = false;
 
-                int choice = scanner.nextInt();
-                scanner.nextLine(); // consume newline
+        while (!loggedIn) {
+            System.out.println("Choose an option: ");
+            System.out.println("1. Register");
+            System.out.println("2. Login");
+            System.out.println("3. Exit");
 
-                switch (choice) {
-                    case 1:
-                        categoryManager.manage(scanner);
-                        break;
-                    case 2:
-                        geographicManager.manage(scanner);
-                        break;
-                    case 3:
-                        conversionManager.manage(scanner);
-                        break;
-                    case 4:
-                        running = false;
-                        break;
-                    default:
-                        System.out.println("Invalid choice. Try again.");
-                }
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1:
+                    userManager.registerUser(scanner);
+                    break;
+                case 2:
+                    if (userManager.login(scanner)) {
+                        loggedIn = true;
+                    } else {
+                        System.out.println("Authentication failed.");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Try again.");
             }
-        } else {
-            System.out.println("Authentication failed.");
+        }
+
+        // Once logged in, allow access to management options
+        boolean running = true;
+        while (running) {
+            System.out.println("Choose an option: ");
+            System.out.println("1. Manage Categories");
+            System.out.println("2. Manage Geographic Areas");
+            System.out.println("3. Manage Conversion Factors");
+//            System.out.println("4. Logout");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1:
+                    categoryManager.manage(scanner);
+                    break;
+                case 2:
+                    geographicManager.manage(scanner);
+                    break;
+                case 3:
+                    conversionManager.manage(scanner);
+                    break;
+                case 4:
+                    loggedIn = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
         }
         scanner.close();
     }

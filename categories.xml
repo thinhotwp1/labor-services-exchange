@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<categories>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><categories>
     <category>
         <name>Music Lessons</name>
         <characteristicField>type</characteristicField>
@@ -24,13 +23,4 @@
             </category>
         </subCategories>
     </category>
-    <category>
-        <name>cate</name>
-        <characteristicField>field</characteristicField>
-    </category>
-    <category>
-        <name>category1</name>
-        <characteristicField>subject1</characteristicField>
-    </category>
-<!--    new data i just add-->
 </categories>

@@ -1,0 +1,12 @@
+<geographicAreas>
+    <district>
+        <name>Centro</name>
+        <neighborhoods>
+            <neighborhood>Brescia Antica</neighborhood>
+            <neighborhood>Centro Storico Nord</neighborhood>
+            <neighborhood>Centro Storico Sud</neighborhood>
+            <!-- Add more neighborhoods as needed -->
+        </neighborhoods>
+    </district>
+    <!-- Add more districts as needed -->
+</geographicAreas>

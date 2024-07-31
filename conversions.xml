@@ -1,8 +1,8 @@
-<conversionFactors>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><conversionFactors>
     <conversion>
         <category1>Solfeggio Lessons</category1>
         <category2>Music History Lessons</category2>
         <factor>1.5</factor>
     </conversion>
     <!-- Add more conversion factors as needed -->
-</conversionFactors>
+<conversionFactor><category1>Instrument Music Lessons</category1><category2>Theory Music Lessons</category2><factor>2.5</factor></conversionFactor></conversionFactors>

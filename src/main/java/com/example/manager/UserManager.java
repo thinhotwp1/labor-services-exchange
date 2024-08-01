@@ -16,6 +16,7 @@ public class UserManager {
     public void manageLogin(Scanner scanner) {
         boolean authenticated = false;
         while (!authenticated) {
+            System.out.println("-----------------------------");
             System.out.println("What type of user are you?");
             System.out.println("1. Admin");
             System.out.println("2. User");
@@ -36,6 +37,7 @@ public class UserManager {
     }
 
     private boolean handleAdminLogin(Scanner scanner) {
+        System.out.println("-----------------------------");
         System.out.println("Are you a new configurator or a registered configurator?");
         System.out.println("1. New Admin");
         System.out.println("2. Registered Admin");
@@ -57,6 +59,7 @@ public class UserManager {
     }
 
     private boolean handleUserLogin(Scanner scanner) {
+        System.out.println("-----------------------------");
         System.out.println("Are you a new user or a registered user?");
         System.out.println("1. New User");
         System.out.println("2. Registered User");
@@ -79,6 +82,7 @@ public class UserManager {
     }
 
     private boolean registerAdmin(Scanner scanner) {
+        System.out.println("-----------------------------");
         System.out.print("Choose your username: ");
         String username = scanner.nextLine();
         System.out.print("Choose your password: ");
@@ -90,6 +94,7 @@ public class UserManager {
     }
 
     private boolean authenticateAdmin(Scanner scanner) {
+        System.out.println("-----------------------------");
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
@@ -109,6 +114,7 @@ public class UserManager {
             Document doc = XMLManager.loadXML(CREDENTIALS_FILE);
             Element root = XMLManager.getElementByTagName(doc, "users");
 
+            System.out.println("-----------------------------");
             System.out.print("Enter username: ");
             String username = scanner.nextLine();
 
@@ -148,6 +154,7 @@ public class UserManager {
                 doc.appendChild(root);
             }
 
+            System.out.println("-----------------------------");
             System.out.print("Enter username: ");
             String username = scanner.nextLine();
 

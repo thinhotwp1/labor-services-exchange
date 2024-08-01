@@ -18,6 +18,7 @@ public class ConversionManager {
     public void manage(Scanner scanner) {
         boolean running = true;
         while (running) {
+            System.out.println("-----------------------------");
             System.out.println("Conversion Factor Management:");
             System.out.println("1. Add Conversion Factor");
             System.out.println("2. Edit Conversion Factor");
@@ -65,18 +66,14 @@ public class ConversionManager {
             double factor = scanner.nextDouble();
             scanner.nextLine(); // consume newline
 
-            Element conversionElement = doc.createElement("conversionFactor");
-            Element category1Element = doc.createElement("category1");
-            category1Element.setTextContent(category1);
-            Element category2Element = doc.createElement("category2");
-            category2Element.setTextContent(category2);
-            Element factorElement = doc.createElement("factor");
-            factorElement.setTextContent(String.valueOf(factor));
+            // Kiểm tra giá trị yếu tố chuyển đổi
+            if (factor < 0.5 || factor > 2.0) {
+                System.out.println("Conversion factor must be between 0.5 and 2.0.");
+                return;
+            }
 
-            conversionElement.appendChild(category1Element);
-            conversionElement.appendChild(category2Element);
-            conversionElement.appendChild(factorElement);
-            root.appendChild(conversionElement);
+            addOrUpdateConversionFactor(root, category1, category2, factor);
+            calculateMissingConversionFactors(doc, root);
 
             XMLManager.saveXML(doc, conversionsFile);
             System.out.println("Conversion factor added successfully.");
@@ -84,6 +81,8 @@ public class ConversionManager {
             e.printStackTrace();
         }
     }
+
+
 
     private void editConversionFactor(Scanner scanner) {
         try {
@@ -111,10 +110,37 @@ public class ConversionManager {
             double newFactor = scanner.nextDouble();
             scanner.nextLine(); // consume newline
 
+            // Kiểm tra giá trị yếu tố chuyển đổi
+            if (newFactor < 0.5 || newFactor > 2.0) {
+                System.out.println("Conversion factor must be between 0.5 and 2.0.");
+                return;
+            }
+
             // Update the conversion factor details
             conversionElement.getElementsByTagName("category1").item(0).setTextContent(newCategory1);
             conversionElement.getElementsByTagName("category2").item(0).setTextContent(newCategory2);
             conversionElement.getElementsByTagName("factor").item(0).setTextContent(String.valueOf(newFactor));
+
+            // Cập nhật yếu tố chuyển đổi nghịch đảo
+            Element inverseConversionElement = findConversionElement(root, category2ToEdit, category1ToEdit);
+            if (inverseConversionElement != null) {
+                inverseConversionElement.getElementsByTagName("category1").item(0).setTextContent(newCategory2);
+                inverseConversionElement.getElementsByTagName("category2").item(0).setTextContent(newCategory1);
+                inverseConversionElement.getElementsByTagName("factor").item(0).setTextContent(String.valueOf(1.0 / newFactor));
+            } else {
+                Element newInverseConversionElement = doc.createElement("conversionFactor");
+                Element inverseCategory1Element = doc.createElement("category1");
+                inverseCategory1Element.setTextContent(newCategory2);
+                Element inverseCategory2Element = doc.createElement("category2");
+                inverseCategory2Element.setTextContent(newCategory1);
+                Element inverseFactorElement = doc.createElement("factor");
+                inverseFactorElement.setTextContent(String.valueOf(1.0 / newFactor));
+
+                newInverseConversionElement.appendChild(inverseCategory1Element);
+                newInverseConversionElement.appendChild(inverseCategory2Element);
+                newInverseConversionElement.appendChild(inverseFactorElement);
+                root.appendChild(newInverseConversionElement);
+            }
 
             XMLManager.saveXML(doc, conversionsFile);
             System.out.println("Conversion factor edited successfully.");
@@ -122,6 +148,76 @@ public class ConversionManager {
             e.printStackTrace();
         }
     }
+    private void calculateMissingConversionFactors(Document doc, Element root) {
+        NodeList conversionList = root.getElementsByTagName("conversionFactor");
+        int n = conversionList.getLength();
+
+        for (int i = 0; i < n; i++) {
+            Element c1Element = (Element) conversionList.item(i);
+            String c1Category1 = c1Element.getElementsByTagName("category1").item(0).getTextContent();
+            String c1Category2 = c1Element.getElementsByTagName("category2").item(0).getTextContent();
+            double f12 = Double.parseDouble(c1Element.getElementsByTagName("factor").item(0).getTextContent());
+
+            for (int j = 0; j < n; j++) { // Start from 0 to cover all pairs
+                if (i == j) continue; // Skip the same element
+
+                Element c2Element = (Element) conversionList.item(j);
+                String c2Category1 = c2Element.getElementsByTagName("category1").item(0).getTextContent();
+                String c2Category2 = c2Element.getElementsByTagName("category2").item(0).getTextContent();
+                double f23 = Double.parseDouble(c2Element.getElementsByTagName("factor").item(0).getTextContent());
+
+                if (c1Category2.equals(c2Category1)) {
+                    double f13 = f12 * f23;
+                    if (!c1Category1.equals(c2Category2)) { // Avoid (c1, c1) pairs
+                        addOrUpdateConversionFactor(root, c1Category1, c2Category2, f13);
+                    }
+                }
+            }
+        }
+    }
+
+    private void addOrUpdateConversionFactor(Element root, String category1, String category2, double factor) {
+        Element existingElement = findConversionElement(root, category1, category2);
+        if (existingElement == null) {
+            Element conversionElement = root.getOwnerDocument().createElement("conversionFactor");
+            Element category1Element = root.getOwnerDocument().createElement("category1");
+            category1Element.setTextContent(category1);
+            Element category2Element = root.getOwnerDocument().createElement("category2");
+            category2Element.setTextContent(category2);
+            Element factorElement = root.getOwnerDocument().createElement("factor");
+            factorElement.setTextContent(String.valueOf(factor));
+
+            conversionElement.appendChild(category1Element);
+            conversionElement.appendChild(category2Element);
+            conversionElement.appendChild(factorElement);
+            root.appendChild(conversionElement);
+
+            // Thêm yếu tố chuyển đổi nghịch đảo
+            if (!category1.equals(category2)) { // Avoid (c1, c1) pairs
+                Element inverseConversionElement = root.getOwnerDocument().createElement("conversionFactor");
+                Element inverseCategory1Element = root.getOwnerDocument().createElement("category1");
+                inverseCategory1Element.setTextContent(category2);
+                Element inverseCategory2Element = root.getOwnerDocument().createElement("category2");
+                inverseCategory2Element.setTextContent(category1);
+                Element inverseFactorElement = root.getOwnerDocument().createElement("factor");
+                inverseFactorElement.setTextContent(String.valueOf(1.0 / factor));
+
+                inverseConversionElement.appendChild(inverseCategory1Element);
+                inverseConversionElement.appendChild(inverseCategory2Element);
+                inverseConversionElement.appendChild(inverseFactorElement);
+                root.appendChild(inverseConversionElement);
+            }
+        } else {
+            existingElement.getElementsByTagName("factor").item(0).setTextContent(String.valueOf(factor));
+
+            // Cập nhật yếu tố chuyển đổi nghịch đảo
+            Element inverseElement = findConversionElement(root, category2, category1);
+            if (inverseElement != null) {
+                inverseElement.getElementsByTagName("factor").item(0).setTextContent(String.valueOf(1.0 / factor));
+            }
+        }
+    }
+
 
     private void deleteConversionFactor(Scanner scanner) {
         try {

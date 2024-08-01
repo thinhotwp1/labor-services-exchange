@@ -1,61 +1,51 @@
 <geographicAreas>
-    <district>
-        <name>Centro</name>
-        <neighborhoods>
-            <neighborhood>Brescia Antica</neighborhood>
-            <neighborhood>Centro Storico Nord</neighborhood>
-            <neighborhood>Centro Storico Sud</neighborhood>
-            <neighborhood>Crocefissa di Rosa</neighborhood>
-            <neighborhood>Porta Milano</neighborhood>
-            <neighborhood>Porta Venezia</neighborhood>
-        </neighborhoods>
-    </district>
-    <district>
-        <name>Est</name>
-        <neighborhoods>
-            <neighborhood>San Polo</neighborhood>
-            <neighborhood>Buffalora</neighborhood>
-            <neighborhood>Caionvico</neighborhood>
-            <neighborhood>San Polo Case</neighborhood>
-            <neighborhood>San Polo Cimabue</neighborhood>
-            <neighborhood>San Polo Parco</neighborhood>
-            <neighborhood>Sanpolino</neighborhood>
-            <neighborhood>Sant'Eufemia della Fonte</neighborhood>
-        </neighborhoods>
-    </district>
-    <district>
-        <name>Nord</name>
-        <neighborhoods>
-            <neighborhood>Borgo Trento</neighborhood>
-            <neighborhood>Casazza</neighborhood>
-            <neighborhood>Mompiano</neighborhood>
-            <neighborhood>San Bartolomeo</neighborhood>
-            <neighborhood>San Rocchino</neighborhood>
-            <neighborhood>Sant'Eustacchio</neighborhood>
-            <neighborhood>Villaggio Prealpino</neighborhood>
-        </neighborhoods>
-    </district>
-    <district>
-        <name>Ovest</name>
-        <neighborhoods>
-            <neighborhood>Chiusure</neighborhood>
-            <neighborhood>Fiumicello</neighborhood>
-            <neighborhood>Primo Maggio</neighborhood>
-            <neighborhood>Urago Mella</neighborhood>
-            <neighborhood>Villaggio Badia</neighborhood>
-            <neighborhood>Villaggio Violino</neighborhood>
-        </neighborhoods>
-    </district>
-    <district>
-        <name>Sud</name>
-        <neighborhoods>
-            <neighborhood>Chiesanuova</neighborhood>
-            <neighborhood>Don Bosco</neighborhood>
-            <neighborhood>Folzano</neighborhood>
-            <neighborhood>Fornaci</neighborhood>
-            <neighborhood>Lamarmora</neighborhood>
-            <neighborhood>Porta Cremona-Volta</neighborhood>
-            <neighborhood>Villaggio Sereno</neighborhood>
-        </neighborhoods>
-    </district>
+    <geographicArea>
+        <district>Centro</district>
+        <neighborhood>Brescia Antica</neighborhood>
+        <neighborhood>Centro Storico Nord</neighborhood>
+        <neighborhood>Centro Storico Sud</neighborhood>
+        <neighborhood>Crocefissa di Rosa</neighborhood>
+        <neighborhood>Porta Milano</neighborhood>
+        <neighborhood>Porta Venezia</neighborhood>
+    </geographicArea>
+    <geographicArea>
+        <district>Est</district>
+        <neighborhood>San Polo</neighborhood>
+        <neighborhood>Buffalora</neighborhood>
+        <neighborhood>Caionvico</neighborhood>
+        <neighborhood>San Polo Case</neighborhood>
+        <neighborhood>San Polo Cimabue</neighborhood>
+        <neighborhood>San Polo Parco</neighborhood>
+        <neighborhood>Sanpolino</neighborhood>
+        <neighborhood>Sant'Eufemia della Fonte</neighborhood>
+    </geographicArea>
+    <geographicArea>
+        <district>Nord</district>
+        <neighborhood>Borgo Trento</neighborhood>
+        <neighborhood>Casazza</neighborhood>
+        <neighborhood>Mompiano</neighborhood>
+        <neighborhood>San Bartolomeo</neighborhood>
+        <neighborhood>San Rocchino</neighborhood>
+        <neighborhood>Sant'Eustacchio</neighborhood>
+        <neighborhood>Villaggio Prealpino</neighborhood>
+    </geographicArea>
+    <geographicArea>
+        <district>Ovest</district>
+        <neighborhood>Chiusure</neighborhood>
+        <neighborhood>Fiumicello</neighborhood>
+        <neighborhood>Primo Maggio</neighborhood>
+        <neighborhood>Urago Mella</neighborhood>
+        <neighborhood>Villaggio Badia</neighborhood>
+        <neighborhood>Villaggio Violino</neighborhood>
+    </geographicArea>
+    <geographicArea>
+        <district>Sud</district>
+        <neighborhood>Chiesanuova</neighborhood>
+        <neighborhood>Don Bosco</neighborhood>
+        <neighborhood>Folzano</neighborhood>
+        <neighborhood>Fornaci</neighborhood>
+        <neighborhood>Lamarmora</neighborhood>
+        <neighborhood>Porta Cremona-Volta</neighborhood>
+        <neighborhood>Villaggio Sereno</neighborhood>
+    </geographicArea>
 </geographicAreas>

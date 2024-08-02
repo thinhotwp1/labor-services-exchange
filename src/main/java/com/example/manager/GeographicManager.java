@@ -4,6 +4,7 @@ import com.example.model.GeographicArea;
 import com.example.util.XMLManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
@@ -71,16 +72,14 @@ public class GeographicManager {
             Element geographicElement = doc.createElement("geographicArea");
             Element districtElement = doc.createElement("district");
             districtElement.setTextContent(district);
-            Element neighborhoodsElement = doc.createElement("neighborhoods");
 
             for (String neighborhood : neighborhoods) {
                 Element neighborhoodElement = doc.createElement("neighborhood");
                 neighborhoodElement.setTextContent(neighborhood);
-                neighborhoodsElement.appendChild(neighborhoodElement);
+                geographicElement.appendChild(neighborhoodElement);
             }
 
             geographicElement.appendChild(districtElement);
-            geographicElement.appendChild(neighborhoodsElement);
             root.appendChild(geographicElement);
 
             XMLManager.saveXML(doc, geographicFile);
@@ -116,15 +115,19 @@ public class GeographicManager {
             }
 
             // Update the geographic area details
-            Element districtElement = (Element) geographicElement.getElementsByTagName("district").item(0);
-            districtElement.getElementsByTagName("name").item(0).setTextContent(newDistrict);
+            geographicElement.getElementsByTagName("district").item(0).setTextContent(newDistrict);
 
-            Element neighborhoodsElement = (Element) geographicElement.getElementsByTagName("neighborhoods").item(0);
-            neighborhoodsElement.setTextContent(""); // Clear existing neighborhoods
+            // Clear existing neighborhoods
+            NodeList neighborhoodNodes = geographicElement.getElementsByTagName("neighborhood");
+            for (int i = 0; i < neighborhoodNodes.getLength(); i++) {
+                neighborhoodNodes.item(i).getParentNode().removeChild(neighborhoodNodes.item(i));
+            }
+
+            // Add new neighborhoods
             for (String neighborhood : neighborhoods) {
                 Element neighborhoodElement = doc.createElement("neighborhood");
                 neighborhoodElement.setTextContent(neighborhood);
-                neighborhoodsElement.appendChild(neighborhoodElement);
+                geographicElement.appendChild(neighborhoodElement);
             }
 
             XMLManager.saveXML(doc, geographicFile);
@@ -145,31 +148,30 @@ public class GeographicManager {
             // Find and remove the geographic area element
             Element geographicElement = findGeographicElement(root, districtToDelete);
             if (geographicElement == null) {
-                System.out.println("Geographic area not found.");
+                System.out.println("District not found.");
                 return;
             }
 
             root.removeChild(geographicElement);
 
             XMLManager.saveXML(doc, geographicFile);
-            System.out.println("Geographic area deleted successfully.");
+            System.out.println("District deleted successfully.");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private Element findGeographicElement(Element root, String districtName) {
-        NodeList districtList = root.getElementsByTagName("district");
+        NodeList districtList = root.getElementsByTagName("geographicArea");
         for (int i = 0; i < districtList.getLength(); i++) {
             Element districtElement = (Element) districtList.item(i);
-            String name = districtElement.getElementsByTagName("name").item(0).getTextContent();
+            String name = districtElement.getElementsByTagName("district").item(0).getTextContent();
             if (name.equals(districtName)) {
-                return (Element) districtElement.getParentNode(); // Return parent node which is <geographicArea>
+                return districtElement;
             }
         }
         return null;
     }
-
 
     private void listGeographicAreas() {
         try {

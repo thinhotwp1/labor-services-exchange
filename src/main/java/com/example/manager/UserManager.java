@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class UserManager {
     private static final String ADMIN_FILE = "admins.xml";
+    private static final String AUTHORIZED_ADMINS_FILE = "authorized_admins.xml";
     private static final String CREDENTIALS_FILE = "credentials.xml";
     private User currentUser;
 
@@ -83,13 +84,24 @@ public class UserManager {
 
     private boolean registerAdmin(Scanner scanner) {
         System.out.println("-----------------------------");
-        System.out.print("Choose your username: ");
-        String username = scanner.nextLine();
-        System.out.print("Choose your password: ");
-        String password = scanner.nextLine();
+        System.out.println("To register as a new admin, you need authorization.");
+        System.out.print("Enter the provided admin username: ");
+        String authUsername = scanner.nextLine();
+        System.out.print("Enter the provided admin password: ");
+        String authPassword = scanner.nextLine();
 
-        saveAdminCredentials(username, password);
-        System.out.println("Configurator registered successfully.");
+        if (!validateAuthorizedAdmin(authUsername, authPassword)) {
+            System.out.println("Authorization failed. You cannot register as a new admin.");
+            return false;
+        }
+
+        System.out.print("Choose your new username: ");
+        String newUsername = scanner.nextLine();
+        System.out.print("Choose your new password: ");
+        String newPassword = scanner.nextLine();
+
+        saveAdminCredentials(newUsername, newPassword);
+        System.out.println("New admin registered successfully.");
         return true;
     }
 
@@ -161,12 +173,6 @@ public class UserManager {
             System.out.print("Enter password: ");
             String password = scanner.nextLine();
 
-//            String role = "";
-//            while (!role.equals("admin") && !role.equals("user")) {
-//                System.out.print("Enter role (admin/user): ");
-//                role = scanner.nextLine();
-//            }
-
             // Check if the user already exists
             NodeList userList = root.getElementsByTagName("user");
             for (int i = 0; i < userList.getLength(); i++) {
@@ -182,12 +188,9 @@ public class UserManager {
             usernameElement.setTextContent(username);
             Element passwordElement = doc.createElement("password");
             passwordElement.setTextContent(password);
-//            Element roleElement = doc.createElement("role");
-//            roleElement.setTextContent(role);
 
             userElement.appendChild(usernameElement);
             userElement.appendChild(passwordElement);
-//            userElement.appendChild(roleElement);
             root.appendChild(userElement);
 
             XMLManager.saveXML(doc, CREDENTIALS_FILE);
@@ -234,6 +237,30 @@ public class UserManager {
             }
 
             Document doc = XMLManager.loadXML(ADMIN_FILE);
+            NodeList adminList = doc.getElementsByTagName("admin");
+
+            for (int i = 0; i < adminList.getLength(); i++) {
+                Element adminElement = (Element) adminList.item(i);
+                String storedUsername = adminElement.getElementsByTagName("username").item(0).getTextContent();
+                String storedPassword = adminElement.getElementsByTagName("password").item(0).getTextContent();
+
+                if (storedUsername.equals(username) && storedPassword.equals(password)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean validateAuthorizedAdmin(String username, String password) {
+        try {
+            if (!XMLManager.fileExists(AUTHORIZED_ADMINS_FILE)) {
+                return false;
+            }
+
+            Document doc = XMLManager.loadXML(AUTHORIZED_ADMINS_FILE);
             NodeList adminList = doc.getElementsByTagName("admin");
 
             for (int i = 0; i < adminList.getLength(); i++) {

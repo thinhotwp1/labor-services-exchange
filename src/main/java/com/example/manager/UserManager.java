@@ -45,7 +45,7 @@ public class UserManager {
 
         switch (adminChoice) {
             case 1:
-                return registerAdmin(scanner);
+                return registerNewAdmin(scanner);
             case 2:
                 return authenticateAdmin(scanner);
             case 3:
@@ -78,15 +78,25 @@ public class UserManager {
         }
     }
 
-    private boolean registerAdmin(Scanner scanner) {
-        System.out.print("Choose your username: ");
+    private boolean registerNewAdmin(Scanner scanner) {
+        System.out.print("Enter admin username: ");
         String username = scanner.nextLine();
-        System.out.print("Choose your password: ");
+        System.out.print("Enter admin password: ");
         String password = scanner.nextLine();
 
-        saveAdminCredentials(username, password);
-        System.out.println("Configurator registered successfully.");
-        return true;
+        if (validateAdminCredentials(username, password)) {
+            System.out.print("Enter new admin username: ");
+            String newUsername = scanner.nextLine();
+            System.out.print("Enter new admin password: ");
+            String newPassword = scanner.nextLine();
+
+            saveAdminCredentials(newUsername, newPassword);
+            System.out.println("New admin registered successfully.");
+            return true;
+        } else {
+            System.out.println("Invalid admin credentials.");
+            return false;
+        }
     }
 
     private boolean authenticateAdmin(Scanner scanner) {
@@ -95,13 +105,7 @@ public class UserManager {
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
-        if (validateAdminCredentials(username, password)) {
-            System.out.println("Configurator authenticated successfully.");
-            return true;
-        } else {
-            System.out.println("Credentials are incorrect. Try again.");
-            return false;
-        }
+        return validateAdminCredentials(username, password);
     }
 
     private boolean login(Scanner scanner) {
@@ -154,12 +158,6 @@ public class UserManager {
             System.out.print("Enter password: ");
             String password = scanner.nextLine();
 
-//            String role = "";
-//            while (!role.equals("admin") && !role.equals("user")) {
-//                System.out.print("Enter role (admin/user): ");
-//                role = scanner.nextLine();
-//            }
-
             // Check if the user already exists
             NodeList userList = root.getElementsByTagName("user");
             for (int i = 0; i < userList.getLength(); i++) {
@@ -175,12 +173,9 @@ public class UserManager {
             usernameElement.setTextContent(username);
             Element passwordElement = doc.createElement("password");
             passwordElement.setTextContent(password);
-//            Element roleElement = doc.createElement("role");
-//            roleElement.setTextContent(role);
 
             userElement.appendChild(usernameElement);
             userElement.appendChild(passwordElement);
-//            userElement.appendChild(roleElement);
             root.appendChild(userElement);
 
             XMLManager.saveXML(doc, CREDENTIALS_FILE);

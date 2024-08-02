@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<credentials>
+    <admins>
+        <admin>
+            <username>admin1</username>
+            <password>password1</password>
+        </admin>
+        <admin>
+            <username>admin2</username>
+            <password>password2</password>
+        </admin>
+        <admin>
+            <username>admin3</username>
+            <password>password3</password>
+        </admin>
+    </admins>
+</credentials>

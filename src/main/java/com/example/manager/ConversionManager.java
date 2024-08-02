@@ -82,8 +82,6 @@ public class ConversionManager {
         }
     }
 
-
-
     private void editConversionFactor(Scanner scanner) {
         try {
             Document doc = XMLManager.loadXML(conversionsFile);
@@ -116,31 +114,16 @@ public class ConversionManager {
                 return;
             }
 
-            // Update the conversion factor details
-            conversionElement.getElementsByTagName("category1").item(0).setTextContent(newCategory1);
-            conversionElement.getElementsByTagName("category2").item(0).setTextContent(newCategory2);
-            conversionElement.getElementsByTagName("factor").item(0).setTextContent(String.valueOf(newFactor));
-
-            // Cập nhật yếu tố chuyển đổi nghịch đảo
+            // Xóa yếu tố chuyển đổi cũ và yếu tố chuyển đổi nghịch đảo cũ
+            conversionElement.getParentNode().removeChild(conversionElement);
             Element inverseConversionElement = findConversionElement(root, category2ToEdit, category1ToEdit);
             if (inverseConversionElement != null) {
-                inverseConversionElement.getElementsByTagName("category1").item(0).setTextContent(newCategory2);
-                inverseConversionElement.getElementsByTagName("category2").item(0).setTextContent(newCategory1);
-                inverseConversionElement.getElementsByTagName("factor").item(0).setTextContent(String.valueOf(1.0 / newFactor));
-            } else {
-                Element newInverseConversionElement = doc.createElement("conversionFactor");
-                Element inverseCategory1Element = doc.createElement("category1");
-                inverseCategory1Element.setTextContent(newCategory2);
-                Element inverseCategory2Element = doc.createElement("category2");
-                inverseCategory2Element.setTextContent(newCategory1);
-                Element inverseFactorElement = doc.createElement("factor");
-                inverseFactorElement.setTextContent(String.valueOf(1.0 / newFactor));
-
-                newInverseConversionElement.appendChild(inverseCategory1Element);
-                newInverseConversionElement.appendChild(inverseCategory2Element);
-                newInverseConversionElement.appendChild(inverseFactorElement);
-                root.appendChild(newInverseConversionElement);
+                inverseConversionElement.getParentNode().removeChild(inverseConversionElement);
             }
+
+            // Thêm yếu tố chuyển đổi mới và yếu tố chuyển đổi nghịch đảo mới
+            addOrUpdateConversionFactor(root, newCategory1, newCategory2, newFactor);
+            calculateMissingConversionFactors(doc, root);
 
             XMLManager.saveXML(doc, conversionsFile);
             System.out.println("Conversion factor edited successfully.");
@@ -148,6 +131,7 @@ public class ConversionManager {
             e.printStackTrace();
         }
     }
+
     private void calculateMissingConversionFactors(Document doc, Element root) {
         NodeList conversionList = root.getElementsByTagName("conversionFactor");
         int n = conversionList.getLength();
@@ -218,7 +202,6 @@ public class ConversionManager {
         }
     }
 
-
     private void deleteConversionFactor(Scanner scanner) {
         try {
             Document doc = XMLManager.loadXML(conversionsFile);
@@ -232,31 +215,21 @@ public class ConversionManager {
 
             // Find and remove the conversion factor element
             Element conversionElement = findConversionElement(root, category1ToDelete, category2ToDelete);
-            if (conversionElement == null) {
-                System.out.println("Conversion factor not found.");
-                return;
+            if (conversionElement != null) {
+                conversionElement.getParentNode().removeChild(conversionElement);
             }
 
-            conversionElement.getParentNode().removeChild(conversionElement);
+            // Find and remove the inverse conversion factor element
+            Element inverseElement = findConversionElement(root, category2ToDelete, category1ToDelete);
+            if (inverseElement != null) {
+                inverseElement.getParentNode().removeChild(inverseElement);
+            }
 
             XMLManager.saveXML(doc, conversionsFile);
             System.out.println("Conversion factor deleted successfully.");
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private Element findConversionElement(Element root, String category1, String category2) {
-        NodeList conversionList = root.getElementsByTagName("conversionFactor");
-        for (int i = 0; i < conversionList.getLength(); i++) {
-            Element conversion = (Element) conversionList.item(i);
-            String c1 = conversion.getElementsByTagName("category1").item(0).getTextContent();
-            String c2 = conversion.getElementsByTagName("category2").item(0).getTextContent();
-            if (c1.equals(category1) && c2.equals(category2)) {
-                return conversion;
-            }
-        }
-        return null;
     }
 
     private void listConversionFactors() {
@@ -269,11 +242,24 @@ public class ConversionManager {
                 Element conversionElement = (Element) conversionList.item(i);
                 String category1 = conversionElement.getElementsByTagName("category1").item(0).getTextContent();
                 String category2 = conversionElement.getElementsByTagName("category2").item(0).getTextContent();
-                double factor = Double.parseDouble(conversionElement.getElementsByTagName("factor").item(0).getTextContent());
-                System.out.println("Category 1: " + category1 + ", Category 2: " + category2 + ", Factor: " + factor);
+                String factor = conversionElement.getElementsByTagName("factor").item(0).getTextContent();
+                System.out.println("Category1: " + category1 + ", Category2: " + category2 + ", Factor: " + factor);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private Element findConversionElement(Element root, String category1, String category2) {
+        NodeList conversionList = root.getElementsByTagName("conversionFactor");
+        for (int i = 0; i < conversionList.getLength(); i++) {
+            Element conversionElement = (Element) conversionList.item(i);
+            String currentCategory1 = conversionElement.getElementsByTagName("category1").item(0).getTextContent();
+            String currentCategory2 = conversionElement.getElementsByTagName("category2").item(0).getTextContent();
+            if (currentCategory1.equals(category1) && currentCategory2.equals(category2)) {
+                return conversionElement;
+            }
+        }
+        return null;
     }
 }

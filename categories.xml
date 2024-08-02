@@ -1,118 +1,207 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <categories>
-                
-    
-    
-    <category>
-                                
-        
-        
-        <name>Music Lessons</name>
-                                
-        
-        
-        <characteristicField>type</characteristicField>
-                                
-        
-        
-        <subCategories>
-                                                
-            
-            
-            <category>
-                                                                
-                
-                
-                <name>Theory Music Lessons</name>
-                                                                
-                
-                
-                <characteristicField>subject</characteristicField>
-                                                                
-                
-                
-                <subCategories>
-                                                                                
-                    
-                    
-                    <category>
-                                                                                                
-                        
-                        
-                        <name>Solfeggio Lessons</name>
-                                                                                                
-                        
-                        
-                        <characteristicField>subject</characteristicField>
-                                                                                            
-                    
-                    
-                    </category>
-                                                                                
-                    
-                    
-                    <category>
-                                                                                                
-                        
-                        
-                        <name>Music History Lessons</name>
-                                                                                                
-                        
-                        
-                        <characteristicField>subject</characteristicField>
-                                                                                            
-                    
-                    
-                    </category>
-                                                                            
-                
-                
-                </subCategories>
-                                                            
-            
-            
-            </category>
-                                                
-            
-            
-            <category>
-                                                                
-                
-                
-                <name>Instrument Music Lessons</name>
-                                                                
-                
-                
-                <characteristicField>subject</characteristicField>
-                                                            
-            
-            
-            </category>
-                                                
-            
-            
-            <category>
-                                                                
-                
-                
-                <name>Physic Music Lessons</name>
-                                                                
-                
-                
-                <characteristicField>subject</characteristicField>
-                                                            
-            
-            
-            </category>
-                                            
-        
-        
-        </subCategories>
                             
     
     
-    </category>
+    
+    
+    
+    <category>
+                                                        
+        
+        
+        
+        
+        
+        <name>Music Lessons</name>
+                                                        
+        
+        
+        
+        
+        
+        <characteristicField>type</characteristicField>
+                                                        
+        
+        
+        
+        
+        
+        <subCategories>
+                                                                                    
             
+            
+            
+            
+            
+            <category>
+                                                                                                                
+                
+                
+                
+                
+                
+                <name>Theory Music Lessons</name>
+                                                                                                                
+                
+                
+                
+                
+                
+                <characteristicField>subject</characteristicField>
+                                                                                                                
+                
+                
+                
+                
+                
+                <subCategories>
+                                                                                                                                            
+                    
+                    
+                    
+                    
+                    
+                    <category>
+                                                                                                                                                                        
+                        
+                        
+                        
+                        
+                        
+                        <name>Solfeggio Lessons</name>
+                                                                                                                                                                        
+                        
+                        
+                        
+                        
+                        
+                        <characteristicField>subject</characteristicField>
+                                                                                                                                                                    
+                    
+                    
+                    
+                    
+                    
+                    </category>
+                                                                                                                                            
+                    
+                    
+                    
+                    
+                    
+                    <category>
+                                                                                                                                                                        
+                        
+                        
+                        
+                        
+                        
+                        <name>Music History Lessons</name>
+                                                                                                                                                                        
+                        
+                        
+                        
+                        
+                        
+                        <characteristicField>subject</characteristicField>
+                                                                                                                                                                    
+                    
+                    
+                    
+                    
+                    
+                    </category>
+                                                                                                                                        
+                
+                
+                
+                
+                
+                </subCategories>
+                                                                                                            
+            
+            
+            
+            
+            
+            </category>
+                                                                                    
+            
+            
+            
+            
+            
+            <category>
+                                                                                                                
+                
+                
+                
+                
+                
+                <name>Instrument Music Lessons</name>
+                                                                                                                
+                
+                
+                
+                
+                
+                <characteristicField>subject</characteristicField>
+                                                                                                            
+            
+            
+            
+            
+            
+            </category>
+                                                                                    
+            
+            
+            
+            
+            
+            <category>
+                                                                                                                
+                
+                
+                
+                
+                
+                <name>Physic Music Lessons</name>
+                                                                                                                
+                
+                
+                
+                
+                
+                <characteristicField>subject</characteristicField>
+                                                                                                            
+            
+            
+            
+            
+            
+            </category>
+                                                                                
+        
+        
+        
+        
+        
+        </subCategories>
+                                                    
+    
+    
+    
+    
+    
+    </category>
+                        
+    
+    
+    
+
+
     
     
     

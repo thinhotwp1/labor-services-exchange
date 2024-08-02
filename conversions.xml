@@ -1,14 +1,3 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <conversionFactors>
-    
-    <conversionFactor>
-        <category1>1</category1>
-        <category2>2</category2>
-        <factor>0.5</factor>
-    </conversionFactor>
-    <conversionFactor>
-        <category1>2</category1>
-        <category2>1</category2>
-        <factor>2.0</factor>
-    </conversionFactor>
 </conversionFactors>

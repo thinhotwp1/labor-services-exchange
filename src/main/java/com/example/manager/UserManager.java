@@ -85,7 +85,7 @@ public class UserManager {
     private boolean registerAdmin(Scanner scanner) {
         System.out.println("-----------------------------");
         System.out.println("To register as a new admin, you need authorization.");
-        System.out.print("Enter the provided admin username: ");
+        System.out.print("Enter the provided admin key: ");
         String authUsername = scanner.nextLine();
         System.out.print("Enter the provided admin password: ");
         String authPassword = scanner.nextLine();

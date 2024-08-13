@@ -79,8 +79,7 @@ public class UserManager {
 
         switch (userChoice) {
             case 1:
-                registerUser(scanner);
-                return true;
+                return registerUser(scanner);
             case 2:
                 return login(scanner);
             case 3:
@@ -150,7 +149,6 @@ public class UserManager {
                     currentUser = new User();
                     currentUser.setUsername(username);
                     currentUser.setPassword(password);
-//                    currentUser.setRole(userElement.getElementsByTagName("role").item(0).getTextContent());
                     return true;
                 }
             }
@@ -161,7 +159,7 @@ public class UserManager {
         return false;
     }
 
-    public void registerUser(Scanner scanner) {
+    private boolean registerUser(Scanner scanner) {
         try {
             Document doc;
             Element root;
@@ -179,35 +177,68 @@ public class UserManager {
             System.out.print("Enter username: ");
             String username = scanner.nextLine();
 
-            System.out.print("Enter password: ");
-            String password = scanner.nextLine();
-
-            // Check if the user already exists
             NodeList userList = root.getElementsByTagName("user");
             for (int i = 0; i < userList.getLength(); i++) {
                 Element userElement = (Element) userList.item(i);
                 if (userElement.getElementsByTagName("username").item(0).getTextContent().equals(username)) {
                     System.out.println("User already exists.");
-                    return;
+                    return false;
                 }
             }
 
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
+
+            System.out.print("Enter email: ");
+            String email = scanner.nextLine();
+
+            System.out.println("Select your geographical area:");
+            System.out.println("1. North America");
+            System.out.println("2. Europe");
+            System.out.println("3. Asia");
+            int areaChoice = scanner.nextInt();
+            scanner.nextLine();
+            String geographicalArea = getGeographicalArea(areaChoice);
+
+            // Tạo và lưu người dùng mới
             Element userElement = doc.createElement("user");
             Element usernameElement = doc.createElement("username");
             usernameElement.setTextContent(username);
             Element passwordElement = doc.createElement("password");
             passwordElement.setTextContent(password);
+            Element emailElement = doc.createElement("email");
+            emailElement.setTextContent(email);
+            Element areaElement = doc.createElement("geographicalArea");
+            areaElement.setTextContent(geographicalArea);
 
             userElement.appendChild(usernameElement);
             userElement.appendChild(passwordElement);
+            userElement.appendChild(emailElement);
+            userElement.appendChild(areaElement);
             root.appendChild(userElement);
 
             XMLManager.saveXML(doc, CREDENTIALS_FILE);
             System.out.println("User registered successfully.");
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return true;
     }
+
+    private String getGeographicalArea(int choice) {
+        switch (choice) {
+            case 1:
+                return "North America";
+            case 2:
+                return "Europe";
+            case 3:
+                return "Asia";
+            default:
+                return "Unknown";
+        }
+    }
+
 
     private void saveAdminCredentials(String username, String password) {
         try {

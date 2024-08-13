@@ -190,8 +190,7 @@ public class CategoryManager {
     private void printCategory(Element categoryElement, int indentLevel) {
         String name = categoryElement.getElementsByTagName("name").item(0).getTextContent();
         String characteristicField = categoryElement.getElementsByTagName("characteristicField").item(0).getTextContent();
-        String indent = "    ".repeat(indentLevel); // Mỗi cấp độ thụt lề sẽ thêm 4 khoảng trắng
-
+        String indent = "    ".repeat(indentLevel);
         System.out.println(indent + "Category Name: " + name + ", Characteristic Field: " + characteristicField);
 
         NodeList subCategoryNodes = categoryElement.getElementsByTagName("subCategories");
@@ -200,7 +199,7 @@ public class CategoryManager {
             for (int i = 0; i < subCategories.getLength(); i++) {
                 if (subCategories.item(i) instanceof Element) {
                     Element subCategoryElement = (Element) subCategories.item(i);
-                    printCategory(subCategoryElement, indentLevel + 1); // Gọi đệ quy với mức thụt lề tăng lên
+                    printCategory(subCategoryElement, indentLevel + 1);
                 }
             }
         }

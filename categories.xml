@@ -1,199 +1,133 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <categories>
-                    
-    
-    
-    
-    <category>
-                                        
-        
-        
-        
-        <name>Physic Music Lessons</name>
-                                        
-        
-        
-        
-        <characteristicField>subject</characteristicField>
-                                        
-        
-        
-        
-        <subCategories>
-                                                            
-            
-            
-            
-            <category>
-                                                                                
-                
-                
-                
-                <name>physical</name>
-                                                                                
-                
-                
-                
-                <characteristicField>type</characteristicField>
-                                                                            
-            
-            
-            
-            </category>
-                                                        
-        
-        
-        
-        </subCategories>
-                                    
-    
-    
-    
-    </category>
-                    
-    
-    
-    
-    <category>
-                                        
-        
-        
-        
-        <name>Mathematics</name>
-                                        
-        
-        
-        
-        <characteristicField>subject</characteristicField>
-                                        
-        
-        
-        
-        <subCategories>
-                                                            
-            
-            
-            
-            <category>
-                                                                                
-                
-                
-                
-                <name>Algebra</name>
-                                                                                
-                
-                
-                
-                <characteristicField>branch</characteristicField>
-                                                                                
-                
-                
-                
-                <subCategories>
-                                                                                                    
-                    
-                    
-                    
-                    <category>
-                                                                                                                        
-                        
-                        
-                        
-                        <name>Linear Algebra</name>
-                                                                                                                        
-                        
-                        
-                        
-                        <characteristicField>sub-branch</characteristicField>
-                                                                                                                    
-                    
-                    
-                    
-                    </category>
-                                                                                                
-                
-                
-                
-                </subCategories>
-                                                                            
-            
-            
-            
-            </category>
-                                                            
-            
-            
-            
-            <category>
-                                                                                
-                
-                
-                
-                <name>Geometry</name>
-                                                                                
-                
-                
-                
-                <characteristicField>branch</characteristicField>
-                                                                            
-            
-            
-            
-            </category>
-                                                        
-        
-        
-        
-        </subCategories>
-                                    
-    
-    
-    
-    </category>
-                
-    
-    
-    
-    <category>
-                                
-        
-        
-        <name>new category</name>
-                                
-        
-        
-        <characteristicField>subject</characteristicField>
-                            
-        
-        
-        <subCategories>
-                                    
-            
-            <category>
-                                                
-                
-                <name>new category 2</name>
-                                                
-                
-                <characteristicField>sub</characteristicField>
-                                            
-            
-            </category>
-                                
-        
-        </subCategories>
-                    
-    
-    </category>
-            
 
-    
+
     <category>
-                
+
+
+        <name>Physic Music Lessons</name>
+
+
+        <characteristicField>subject</characteristicField>
+
+
+        <subCategories>
+
+
+            <category>
+
+
+                <name>physical</name>
+
+
+                <characteristicField>type</characteristicField>
+
+
+            </category>
+
+
+        </subCategories>
+
+
+    </category>
+
+
+    <category>
+
+
+        <name>Mathematics</name>
+
+
+        <characteristicField>subject</characteristicField>
+
+
+        <subCategories>
+
+
+            <category>
+
+
+                <name>Algebra</name>
+
+
+                <characteristicField>branch</characteristicField>
+
+
+                <subCategories>
+
+
+                    <category>
+
+
+                        <name>Linear Algebra</name>
+
+
+                        <characteristicField>sub-branch</characteristicField>
+
+
+                    </category>
+
+
+                </subCategories>
+
+
+            </category>
+
+
+            <category>
+
+
+                <name>Geometry</name>
+
+
+                <characteristicField>branch</characteristicField>
+
+
+            </category>
+
+
+        </subCategories>
+
+
+    </category>
+
+
+    <category>
+
+
+        <name>new category</name>
+
+
+        <characteristicField>subject</characteristicField>
+
+
+        <subCategories>
+
+
+            <category>
+
+
+                <name>new category 2</name>
+
+
+                <characteristicField>sub</characteristicField>
+
+
+            </category>
+
+
+        </subCategories>
+
+
+    </category>
+
+
+    <category>
+
         <name>new category 10</name>
-                
+
         <characteristicField>sub</characteristicField>
-            
+
         <subCategories>
             <category>
                 <name>new category 11</name>
@@ -201,5 +135,5 @@
             </category>
         </subCategories>
     </category>
-    
+
 </categories>

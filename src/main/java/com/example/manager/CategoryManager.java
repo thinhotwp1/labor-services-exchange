@@ -72,7 +72,30 @@ public class CategoryManager {
 
             categoryElement.appendChild(nameElement);
             categoryElement.appendChild(characteristicFieldElement);
-            root.appendChild(categoryElement);
+
+            System.out.print("Do you want to add this as a subcategory to an existing category? (yes/no): ");
+            String addToExisting = scanner.nextLine();
+
+            if ("yes".equalsIgnoreCase(addToExisting)) {
+                System.out.print("Enter the name of the parent category: ");
+                String parentCategoryName = scanner.nextLine();
+                Element parentCategoryElement = findCategoryElement(root, parentCategoryName);
+                if (parentCategoryElement != null) {
+                    NodeList subCategoriesList = parentCategoryElement.getElementsByTagName("subCategories");
+                    Element subCategoriesElement;
+                    if (subCategoriesList.getLength() > 0) {
+                        subCategoriesElement = (Element) subCategoriesList.item(0);
+                    } else {
+                        subCategoriesElement = doc.createElement("subCategories");
+                        parentCategoryElement.appendChild(subCategoriesElement);
+                    }
+                    subCategoriesElement.appendChild(categoryElement);
+                } else {
+                    System.out.println("Parent category not found.");
+                }
+            } else {
+                root.appendChild(categoryElement);
+            }
 
             XMLManager.saveXML(doc, categoriesFile);
             System.out.println("Category added successfully.");
@@ -152,15 +175,35 @@ public class CategoryManager {
             Document doc = XMLManager.loadXML(categoriesFile);
             Element root = XMLManager.getElementByTagName(doc, "categories");
 
-            NodeList categoryList = root.getElementsByTagName("category");
+            NodeList categoryList = root.getChildNodes();
             for (int i = 0; i < categoryList.getLength(); i++) {
-                Element categoryElement = (Element) categoryList.item(i);
-                String name = categoryElement.getElementsByTagName("name").item(0).getTextContent();
-                String characteristicField = categoryElement.getElementsByTagName("characteristicField").item(0).getTextContent();
-                System.out.println("Category Name: " + name + ", Characteristic Field: " + characteristicField);
+                if (categoryList.item(i) instanceof Element) {
+                    Element categoryElement = (Element) categoryList.item(i);
+                    printCategory(categoryElement, 0);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private void printCategory(Element categoryElement, int indentLevel) {
+        String name = categoryElement.getElementsByTagName("name").item(0).getTextContent();
+        String characteristicField = categoryElement.getElementsByTagName("characteristicField").item(0).getTextContent();
+        String indent = "    ".repeat(indentLevel); // Mỗi cấp độ thụt lề sẽ thêm 4 khoảng trắng
+
+        System.out.println(indent + "Category Name: " + name + ", Characteristic Field: " + characteristicField);
+
+        NodeList subCategoryNodes = categoryElement.getElementsByTagName("subCategories");
+        if (subCategoryNodes.getLength() > 0) {
+            NodeList subCategories = subCategoryNodes.item(0).getChildNodes();
+            for (int i = 0; i < subCategories.getLength(); i++) {
+                if (subCategories.item(i) instanceof Element) {
+                    Element subCategoryElement = (Element) subCategories.item(i);
+                    printCategory(subCategoryElement, indentLevel + 1); // Gọi đệ quy với mức thụt lề tăng lên
+                }
+            }
+        }
+    }
+
 }

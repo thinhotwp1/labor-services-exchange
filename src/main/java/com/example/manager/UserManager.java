@@ -1,5 +1,7 @@
 package com.example.manager;
 
+import com.example.model.Login;
+import com.example.model.TypeUser;
 import com.example.model.User;
 import com.example.util.XMLManager;
 import org.w3c.dom.Document;
@@ -14,27 +16,34 @@ public class UserManager {
     private static final String CREDENTIALS_FILE = "credentials.xml";
     private User currentUser;
 
-    public void manageLogin(Scanner scanner) {
-        boolean authenticated = false;
-        while (!authenticated) {
+    public Login manageLogin(Scanner scanner) {
+        Login login = new Login();
+        boolean authentication = false;
+        while (!authentication) {
             System.out.println("-----------------------------");
             System.out.println("What type of user are you?");
             System.out.println("1. Admin");
             System.out.println("2. User");
             int userTypeChoice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            scanner.nextLine();
 
             switch (userTypeChoice) {
                 case 1:
-                    authenticated = handleAdminLogin(scanner);
+                    authentication = handleAdminLogin(scanner);
+                    login.setAuthentication(authentication);
+                    login.setTypeUser(TypeUser.ADMIN);
                     break;
                 case 2:
-                    authenticated = handleUserLogin(scanner);
+                    authentication = handleUserLogin(scanner);
+                    login.setAuthentication(authentication);
+                    login.setTypeUser(TypeUser.USER);
                     break;
                 default:
                     System.out.println("Invalid choice. Try again.");
             }
+
         }
+        return login;
     }
 
     private boolean handleAdminLogin(Scanner scanner) {
@@ -141,7 +150,7 @@ public class UserManager {
                     currentUser = new User();
                     currentUser.setUsername(username);
                     currentUser.setPassword(password);
-                    currentUser.setRole(userElement.getElementsByTagName("role").item(0).getTextContent());
+//                    currentUser.setRole(userElement.getElementsByTagName("role").item(0).getTextContent());
                     return true;
                 }
             }

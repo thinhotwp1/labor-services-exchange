@@ -1,5 +1,7 @@
 package com.example.manager;
 
+import com.example.model.Login;
+import com.example.model.TypeUser;
 import com.example.model.User;
 import com.example.util.XMLManager;
 import org.w3c.dom.Document;
@@ -10,30 +12,38 @@ import java.util.Scanner;
 
 public class UserManager {
     private static final String ADMIN_FILE = "admins.xml";
+    private static final String AUTHORIZED_ADMINS_FILE = "authorized_admins.xml";
     private static final String CREDENTIALS_FILE = "credentials.xml";
     private User currentUser;
 
-    public void manageLogin(Scanner scanner) {
-        boolean authenticated = false;
-        while (!authenticated) {
+    public Login manageLogin(Scanner scanner) {
+        Login login = new Login();
+        boolean authentication = false;
+        while (!authentication) {
             System.out.println("-----------------------------");
             System.out.println("What type of user are you?");
             System.out.println("1. Admin");
             System.out.println("2. User");
             int userTypeChoice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            scanner.nextLine();
 
             switch (userTypeChoice) {
                 case 1:
-                    authenticated = handleAdminLogin(scanner);
+                    authentication = handleAdminLogin(scanner);
+                    login.setAuthentication(authentication);
+                    login.setTypeUser(TypeUser.ADMIN);
                     break;
                 case 2:
-                    authenticated = handleUserLogin(scanner);
+                    authentication = handleUserLogin(scanner);
+                    login.setAuthentication(authentication);
+                    login.setTypeUser(TypeUser.USER);
                     break;
                 default:
                     System.out.println("Invalid choice. Try again.");
             }
+
         }
+        return login;
     }
 
     private boolean handleAdminLogin(Scanner scanner) {
@@ -47,7 +57,7 @@ public class UserManager {
 
         switch (adminChoice) {
             case 1:
-                return registerNewAdmin(scanner);
+                return registerAdmin(scanner);
             case 2:
                 return authenticateAdmin(scanner);
             case 3:
@@ -69,8 +79,7 @@ public class UserManager {
 
         switch (userChoice) {
             case 1:
-                registerUser(scanner);
-                return true;
+                return registerUser(scanner);
             case 2:
                 return login(scanner);
             case 3:
@@ -81,25 +90,27 @@ public class UserManager {
         }
     }
 
-    private boolean registerNewAdmin(Scanner scanner) {
-        System.out.print("Enter admin username: ");
-        String username = scanner.nextLine();
-        System.out.print("Enter admin password: ");
-        String password = scanner.nextLine();
+    private boolean registerAdmin(Scanner scanner) {
+        System.out.println("-----------------------------");
+        System.out.println("To register as a new admin, you need authorization.");
+        System.out.print("Enter the provided admin key: ");
+        String authUsername = scanner.nextLine();
+        System.out.print("Enter the provided admin password: ");
+        String authPassword = scanner.nextLine();
 
-        if (validateAdminCredentials(username, password)) {
-            System.out.print("Enter new admin username: ");
-            String newUsername = scanner.nextLine();
-            System.out.print("Enter new admin password: ");
-            String newPassword = scanner.nextLine();
-
-            saveAdminCredentials(newUsername, newPassword);
-            System.out.println("New admin registered successfully.");
-            return true;
-        } else {
-            System.out.println("Invalid admin credentials.");
+        if (!validateAuthorizedAdmin(authUsername, authPassword)) {
+            System.out.println("Authorization failed. You cannot register as a new admin.");
             return false;
         }
+
+        System.out.print("Choose your new username: ");
+        String newUsername = scanner.nextLine();
+        System.out.print("Choose your new password: ");
+        String newPassword = scanner.nextLine();
+
+        saveAdminCredentials(newUsername, newPassword);
+        System.out.println("New admin registered successfully.");
+        return true;
     }
 
     private boolean authenticateAdmin(Scanner scanner) {
@@ -109,7 +120,13 @@ public class UserManager {
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
-        return validateAdminCredentials(username, password);
+        if (validateAdminCredentials(username, password)) {
+            System.out.println("Configurator authenticated successfully.");
+            return true;
+        } else {
+            System.out.println("Credentials are incorrect. Try again.");
+            return false;
+        }
     }
 
     private boolean login(Scanner scanner) {
@@ -132,7 +149,6 @@ public class UserManager {
                     currentUser = new User();
                     currentUser.setUsername(username);
                     currentUser.setPassword(password);
-                    currentUser.setRole(userElement.getElementsByTagName("role").item(0).getTextContent());
                     return true;
                 }
             }
@@ -143,7 +159,7 @@ public class UserManager {
         return false;
     }
 
-    public void registerUser(Scanner scanner) {
+    private boolean registerUser(Scanner scanner) {
         try {
             Document doc;
             Element root;
@@ -161,35 +177,68 @@ public class UserManager {
             System.out.print("Enter username: ");
             String username = scanner.nextLine();
 
-            System.out.print("Enter password: ");
-            String password = scanner.nextLine();
-
-            // Check if the user already exists
             NodeList userList = root.getElementsByTagName("user");
             for (int i = 0; i < userList.getLength(); i++) {
                 Element userElement = (Element) userList.item(i);
                 if (userElement.getElementsByTagName("username").item(0).getTextContent().equals(username)) {
                     System.out.println("User already exists.");
-                    return;
+                    return false;
                 }
             }
 
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
+
+            System.out.print("Enter email: ");
+            String email = scanner.nextLine();
+
+            System.out.println("Select your geographical area:");
+            System.out.println("1. North America");
+            System.out.println("2. Europe");
+            System.out.println("3. Asia");
+            int areaChoice = scanner.nextInt();
+            scanner.nextLine();
+            String geographicalArea = getGeographicalArea(areaChoice);
+
+            // Tạo và lưu người dùng mới
             Element userElement = doc.createElement("user");
             Element usernameElement = doc.createElement("username");
             usernameElement.setTextContent(username);
             Element passwordElement = doc.createElement("password");
             passwordElement.setTextContent(password);
+            Element emailElement = doc.createElement("email");
+            emailElement.setTextContent(email);
+            Element areaElement = doc.createElement("geographicalArea");
+            areaElement.setTextContent(geographicalArea);
 
             userElement.appendChild(usernameElement);
             userElement.appendChild(passwordElement);
+            userElement.appendChild(emailElement);
+            userElement.appendChild(areaElement);
             root.appendChild(userElement);
 
             XMLManager.saveXML(doc, CREDENTIALS_FILE);
             System.out.println("User registered successfully.");
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return true;
     }
+
+    private String getGeographicalArea(int choice) {
+        switch (choice) {
+            case 1:
+                return "North America";
+            case 2:
+                return "Europe";
+            case 3:
+                return "Asia";
+            default:
+                return "Unknown";
+        }
+    }
+
 
     private void saveAdminCredentials(String username, String password) {
         try {
@@ -228,6 +277,30 @@ public class UserManager {
             }
 
             Document doc = XMLManager.loadXML(ADMIN_FILE);
+            NodeList adminList = doc.getElementsByTagName("admin");
+
+            for (int i = 0; i < adminList.getLength(); i++) {
+                Element adminElement = (Element) adminList.item(i);
+                String storedUsername = adminElement.getElementsByTagName("username").item(0).getTextContent();
+                String storedPassword = adminElement.getElementsByTagName("password").item(0).getTextContent();
+
+                if (storedUsername.equals(username) && storedPassword.equals(password)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean validateAuthorizedAdmin(String username, String password) {
+        try {
+            if (!XMLManager.fileExists(AUTHORIZED_ADMINS_FILE)) {
+                return false;
+            }
+
+            Document doc = XMLManager.loadXML(AUTHORIZED_ADMINS_FILE);
             NodeList adminList = doc.getElementsByTagName("admin");
 
             for (int i = 0; i < adminList.getLength(); i++) {

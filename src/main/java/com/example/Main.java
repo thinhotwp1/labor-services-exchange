@@ -4,6 +4,8 @@ import com.example.manager.CategoryManager;
 import com.example.manager.ConversionManager;
 import com.example.manager.GeographicManager;
 import com.example.manager.UserManager;
+import com.example.model.Login;
+import com.example.model.TypeUser;
 
 import java.util.Scanner;
 
@@ -12,7 +14,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         UserManager userManager = new UserManager();
 
-        userManager.manageLogin(scanner);
+        Login login = userManager.manageLogin(scanner);
 
         boolean running = true;
         while (running) {
@@ -28,6 +30,10 @@ public class Main {
 
             switch (choice) {
                 case 1:
+                    if (login.getTypeUser() != TypeUser.ADMIN) {
+                        System.out.println("You are not admin. Invalid choice. Try again.");
+                        break;
+                    }
                     CategoryManager categoryManager = new CategoryManager("categories.xml");
                     categoryManager.manage(scanner);
                     break;
@@ -44,6 +50,7 @@ public class Main {
                     break;
                 default:
                     System.out.println("Invalid choice. Try again.");
+                    break;
             }
         }
     }

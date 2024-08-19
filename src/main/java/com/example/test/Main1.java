@@ -9,7 +9,7 @@ public class Main1 {
         thinh.setName("Thinh");
         thinh.setAge(23);
         thinh.setGender("Nam");
-        thinh.setAddress("123 ABC, TP. HCM");
+        thinh.setAddress("123 ABC, TP. Ha Noi");
         thinh.setPhoneNumber("0923001270");
         thinh.setMoneyAmount(200.5);
 

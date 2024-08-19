@@ -1,6 +1,5 @@
 package com.example.manager;
 
-import com.example.model.ConversionFactor;
 import com.example.util.XMLManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

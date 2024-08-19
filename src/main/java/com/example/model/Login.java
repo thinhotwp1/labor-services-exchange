@@ -6,4 +6,5 @@ import lombok.Data;
 public class Login {
     private  TypeUser typeUser;
     private boolean authentication;
+
 }

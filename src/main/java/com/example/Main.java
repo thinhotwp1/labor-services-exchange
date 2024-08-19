@@ -16,6 +16,7 @@ public class Main {
 
         boolean running = true;
         while (running) {
+            System.out.println("-----------------------------");
             System.out.println("Main Menu:");
             System.out.println("1. Category Management");
             System.out.println("2. Geographic Area Management");
@@ -31,11 +32,11 @@ public class Main {
                     categoryManager.manage(scanner);
                     break;
                 case 2:
-                    GeographicManager geographicManager = new GeographicManager("geographicAreas.xml");
+                    GeographicManager geographicManager = new GeographicManager("geographic.xml");
                     geographicManager.manage(scanner);
                     break;
                 case 3:
-                    ConversionManager conversionManager = new ConversionManager("conversionFactors.xml");
+                    ConversionManager conversionManager = new ConversionManager("conversions.xml");
                     conversionManager.manage(scanner);
                     break;
                 case 4:

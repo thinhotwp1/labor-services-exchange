@@ -20,6 +20,7 @@ public class GeographicManager {
     public void manage(Scanner scanner) {
         boolean running = true;
         while (running) {
+            System.out.println("-----------------------------");
             System.out.println("Geographic Area Management:");
             System.out.println("1. Add Geographic Area");
             System.out.println("2. Edit Geographic Area");

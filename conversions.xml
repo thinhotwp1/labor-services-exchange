@@ -1,8 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><conversionFactors>
-    <conversion>
-        <category1>Solfeggio Lessons</category1>
-        <category2>Music History Lessons</category2>
-        <factor>1.5</factor>
-    </conversion>
-    <!-- Add more conversion factors as needed -->
-<conversionFactor><category1>Instrument Music Lessons</category1><category2>Theory Music Lessons</category2><factor>2.5</factor></conversionFactor></conversionFactors>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<conversionFactors>
+    
+    <conversionFactor>
+        <category1>1</category1>
+        <category2>2</category2>
+        <factor>0.5</factor>
+    </conversionFactor>
+    <conversionFactor>
+        <category1>2</category1>
+        <category2>1</category2>
+        <factor>2.0</factor>
+    </conversionFactor>
+</conversionFactors>

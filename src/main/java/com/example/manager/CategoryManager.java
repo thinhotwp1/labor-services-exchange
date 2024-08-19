@@ -20,7 +20,7 @@ public class CategoryManager {
     public void manage(Scanner scanner) {
         boolean running = true;
         while (running) {
-            System.out.println("===========================");
+            System.out.println("-----------------------------");
             System.out.println("Category Management:");
             System.out.println("1. Add Category");
             System.out.println("2. Edit Category");

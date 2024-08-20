@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<exchangeProposals>
+            
+    
+    <proposal>
+                        
+        
+        <user>JohnDoe</user>
+                        
+        
+        <request>
+                                    
+            
+            <category>Piano lessons for beginners</category>
+                                    
+            
+            <duration>10</duration>
+                                
+        
+        </request>
+                        
+        
+        <offer>
+                                    
+            
+            <category>High school math tutoring</category>
+                                    
+            
+            <duration>10</duration>
+                                
+        
+        </offer>
+                    
+    
+    </proposal>
+        
+    
+    <proposal>
+                
+        <user>Jame Lee</user>
+                
+        <request>
+                        
+            <category>category 1</category>
+                        
+            <duration>4</duration>
+                    
+        </request>
+                
+        <offer>
+                        
+            <category>category 3</category>
+                        
+            <duration>4</duration>
+                    
+        </offer>
+            
+    </proposal>
+    
+    <proposal>
+        <user>Moe</user>
+        <request>
+            <category>category 3</category>
+            <duration>4</duration>
+        </request>
+        <offer>
+            <category>category 2</category>
+            <duration>8</duration>
+        </offer>
+    </proposal>
+</exchangeProposals>

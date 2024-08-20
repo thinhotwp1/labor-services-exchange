@@ -8,6 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import java.util.Map;
 import java.util.Scanner;
 
 public class UserManager {
@@ -15,6 +16,7 @@ public class UserManager {
     private static final String AUTHORIZED_ADMINS_FILE = "authorized_admins.xml";
     private static final String CREDENTIALS_FILE = "credentials.xml";
     private User currentUser;
+    GeographicManager geographicManager = new GeographicManager();
 
     public Login manageLogin(Scanner scanner) {
         Login login = new Login();
@@ -193,12 +195,10 @@ public class UserManager {
             String email = scanner.nextLine();
 
             System.out.println("Select your geographical area:");
-            System.out.println("1. North America");
-            System.out.println("2. Europe");
-            System.out.println("3. Asia");
+            Map<Integer,String> districtMap = geographicManager.mapGeographicAreas();
             int areaChoice = scanner.nextInt();
             scanner.nextLine();
-            String geographicalArea = getGeographicalArea(areaChoice);
+            String geographicalArea = districtMap.get(areaChoice);
 
             // Tạo và lưu người dùng mới
             Element userElement = doc.createElement("user");
@@ -225,20 +225,6 @@ public class UserManager {
         }
         return true;
     }
-
-    private String getGeographicalArea(int choice) {
-        switch (choice) {
-            case 1:
-                return "North America";
-            case 2:
-                return "Europe";
-            case 3:
-                return "Asia";
-            default:
-                return "Unknown";
-        }
-    }
-
 
     private void saveAdminCredentials(String username, String password) {
         try {

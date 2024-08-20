@@ -34,15 +34,15 @@ public class Main {
                         System.out.println("You are not admin. Invalid choice. Try again.");
                         break;
                     }
-                    CategoryManager categoryManager = new CategoryManager("categories.xml");
+                    CategoryManager categoryManager = new CategoryManager();
                     categoryManager.manage(scanner);
                     break;
                 case 2:
-                    GeographicManager geographicManager = new GeographicManager("geographic.xml");
+                    GeographicManager geographicManager = new GeographicManager();
                     geographicManager.manage(scanner);
                     break;
                 case 3:
-                    ConversionManager conversionManager = new ConversionManager("conversions.xml");
+                    ConversionManager conversionManager = new ConversionManager();
                     conversionManager.manage(scanner);
                     break;
                 case 4:

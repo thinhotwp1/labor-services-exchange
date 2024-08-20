@@ -9,21 +9,27 @@ import java.util.Scanner;
 
 public class ConversionManager {
     private String conversionsFile;
+    private String proposalsFile;
 
-    public ConversionManager(String conversionsFile) {
-        this.conversionsFile = conversionsFile;
+    public ConversionManager() {
+        this.conversionsFile = "conversions.xml";
+        this.proposalsFile = "proposals.xml";
     }
+
 
     public void manage(Scanner scanner) {
         boolean running = true;
         while (running) {
             System.out.println("-----------------------------");
-            System.out.println("Conversion Factor Management:");
+            System.out.println("Conversion Factor and Proposal Management:");
             System.out.println("1. Add Conversion Factor");
             System.out.println("2. Edit Conversion Factor");
             System.out.println("3. Delete Conversion Factor");
             System.out.println("4. List Conversion Factors");
-            System.out.println("5. Back");
+            System.out.println("============================");
+            System.out.println("5. Create Exchange Proposal");
+            System.out.println("6. List Exchange Proposals");
+            System.out.println("7. Back");
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
@@ -42,12 +48,140 @@ public class ConversionManager {
                     listConversionFactors();
                     break;
                 case 5:
+                    createExchangeProposal(scanner);
+                    break;
+                case 6:
+                    listExchangeProposals();
+                    break;
+                case 7:
                     running = false;
                     break;
                 default:
                     System.out.println("Invalid choice. Try again.");
             }
         }
+    }
+
+
+    // Phương thức mới để tạo đề xuất trao đổi dịch vụ
+    private void createExchangeProposal(Scanner scanner) {
+        try {
+            System.out.print("Enter your username: ");
+            String username = scanner.nextLine();
+
+            System.out.print("Enter the service you need: ");
+            String requestCategory = scanner.nextLine();
+
+            System.out.print("Enter the duration of the service (hours): ");
+            int requestDuration = scanner.nextInt();
+            scanner.nextLine(); // consume newline
+
+            System.out.print("Enter the service you offer: ");
+            String offerCategory = scanner.nextLine();
+
+            // Tìm yếu tố chuyển đổi giữa các loại dịch vụ
+            double conversionFactor = findConversionFactor(requestCategory, offerCategory);
+            if (conversionFactor == -1) {
+                System.out.println("No conversion factor found between these categories.");
+                return;
+            }
+
+            // Tính toán số giờ cho phần đề nghị
+            int offerDuration = (int) Math.round(requestDuration * conversionFactor);
+
+            // Hiển thị đề nghị và yêu cầu xác nhận
+            System.out.println("Your offer: " + offerDuration + " hours of " + offerCategory + " in exchange for " + requestDuration + " hours of " + requestCategory);
+            System.out.print("Do you confirm this proposal? (yes/no): ");
+            String confirmation = scanner.nextLine();
+
+            if (confirmation.equalsIgnoreCase("yes")) {
+                // Lưu đề xuất vào file XML
+                saveProposal(username, requestCategory, requestDuration, offerCategory, offerDuration);
+                System.out.println("Proposal confirmed and saved.");
+            } else {
+                System.out.println("Proposal rejected.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveProposal(String username, String requestCategory, int requestDuration, String offerCategory, int offerDuration) {
+        try {
+            Document doc = XMLManager.loadXML(proposalsFile);
+            Element root = XMLManager.getElementByTagName(doc, "exchangeProposals");
+
+            Element proposalElement = doc.createElement("proposal");
+
+            Element userElement = doc.createElement("user");
+            userElement.setTextContent(username);
+
+            Element requestElement = doc.createElement("request");
+            Element requestCategoryElement = doc.createElement("category");
+            requestCategoryElement.setTextContent(requestCategory);
+            Element requestDurationElement = doc.createElement("duration");
+            requestDurationElement.setTextContent(String.valueOf(requestDuration));
+            requestElement.appendChild(requestCategoryElement);
+            requestElement.appendChild(requestDurationElement);
+
+            Element offerElement = doc.createElement("offer");
+            Element offerCategoryElement = doc.createElement("category");
+            offerCategoryElement.setTextContent(offerCategory);
+            Element offerDurationElement = doc.createElement("duration");
+            offerDurationElement.setTextContent(String.valueOf(offerDuration));
+            offerElement.appendChild(offerCategoryElement);
+            offerElement.appendChild(offerDurationElement);
+
+            proposalElement.appendChild(userElement);
+            proposalElement.appendChild(requestElement);
+            proposalElement.appendChild(offerElement);
+
+            root.appendChild(proposalElement);
+
+            XMLManager.saveXML(doc, proposalsFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void listExchangeProposals() {
+        try {
+            Document doc = XMLManager.loadXML(proposalsFile);
+            Element root = XMLManager.getElementByTagName(doc, "exchangeProposals");
+
+            NodeList proposalList = root.getElementsByTagName("proposal");
+            for (int i = 0; i < proposalList.getLength(); i++) {
+                Element proposalElement = (Element) proposalList.item(i);
+
+                String user = proposalElement.getElementsByTagName("user").item(0).getTextContent();
+                String requestCategory = proposalElement.getElementsByTagName("category").item(0).getTextContent();
+                String requestDuration = proposalElement.getElementsByTagName("duration").item(0).getTextContent();
+                String offerCategory = proposalElement.getElementsByTagName("category").item(1).getTextContent();
+                String offerDuration = proposalElement.getElementsByTagName("duration").item(1).getTextContent();
+
+                System.out.println("User: " + user);
+                System.out.println("Requested: " + requestDuration + " hours of " + requestCategory);
+                System.out.println("Offered: " + offerDuration + " hours of " + offerCategory);
+                System.out.println("-----------------------------");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private double findConversionFactor(String category1, String category2) {
+        try {
+            Document doc = XMLManager.loadXML(conversionsFile);
+            Element root = XMLManager.getElementByTagName(doc, "conversionFactors");
+
+            Element conversionElement = findConversionElement(root, category1, category2);
+            if (conversionElement != null) {
+                return Double.parseDouble(conversionElement.getElementsByTagName("factor").item(0).getTextContent());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     private void addConversionFactor(Scanner scanner) {

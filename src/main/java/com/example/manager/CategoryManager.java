@@ -10,8 +10,8 @@ import java.util.Scanner;
 public class CategoryManager {
     private String categoriesFile;
 
-    public CategoryManager(String categoriesFile) {
-        this.categoriesFile = categoriesFile;
+    public CategoryManager() {
+        this.categoriesFile = "categories.xml";
     }
 
     public void manage(Scanner scanner) {

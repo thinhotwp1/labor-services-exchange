@@ -5,15 +5,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class GeographicManager {
     private String geographicFile;
 
-    public GeographicManager(String geographicFile) {
-        this.geographicFile = geographicFile;
+    public GeographicManager() {
+        this.geographicFile = "geographic.xml";
     }
 
     public void manage(Scanner scanner) {
@@ -190,5 +188,31 @@ public class GeographicManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Map<Integer, String> mapGeographicAreas() {
+        Map<Integer, String> mapDistrict = new HashMap<>();
+        try {
+            Document doc = XMLManager.loadXML(geographicFile);
+            Element root = XMLManager.getElementByTagName(doc, "geographicAreas");
+
+            NodeList geographicList = root.getElementsByTagName("geographicArea");
+            for (int i = 1; i <= geographicList.getLength(); i++) {
+                Element geographicElement = (Element) geographicList.item(i);
+                if (geographicElement != null) {
+                    String district = geographicElement.getElementsByTagName("district").item(0).getTextContent();
+                    mapDistrict.put(i, district);
+                    NodeList neighborhoodList = geographicElement.getElementsByTagName("neighborhood");
+                    List<String> neighborhoods = new ArrayList<>();
+                    for (int j = 0; j < neighborhoodList.getLength(); j++) {
+                        neighborhoods.add(neighborhoodList.item(j).getTextContent());
+                    }
+                    System.out.println(i + ". District: " + district + ", Neighborhoods: " + String.join(", ", neighborhoods));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mapDistrict;
     }
 }

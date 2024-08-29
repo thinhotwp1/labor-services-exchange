@@ -30,10 +30,10 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    if (login.getTypeUser() != TypeUser.ADMIN) {
-                        System.out.println("You are not admin. Invalid choice. Try again.");
-                        break;
-                    }
+//                    if (login.getTypeUser() != TypeUser.ADMIN) {
+//                        System.out.println("You are not admin. Invalid choice. Try again.");
+//                        break;
+//                    }
                     CategoryManager categoryManager = new CategoryManager();
                     categoryManager.manage(scanner);
                     break;

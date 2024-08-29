@@ -23,7 +23,8 @@ public class CategoryManager {
             System.out.println("2. Edit Category");
             System.out.println("3. Delete Category");
             System.out.println("4. List Categories");
-            System.out.println("5. Back");
+            System.out.println("5. Show Category Details");
+            System.out.println("6. Back");
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
@@ -42,6 +43,9 @@ public class CategoryManager {
                     listCategories();
                     break;
                 case 5:
+                    showCategoryDetails(scanner);
+                    break;
+                case 6:
                     running = false;
                     break;
                 default:
@@ -167,7 +171,7 @@ public class CategoryManager {
         return null;
     }
 
-    private void listCategories() {
+    public void listCategories() {
         try {
             Document doc = XMLManager.loadXML(categoriesFile);
             Element root = XMLManager.getElementByTagName(doc, "categories");
@@ -176,7 +180,8 @@ public class CategoryManager {
             for (int i = 0; i < categoryList.getLength(); i++) {
                 if (categoryList.item(i) instanceof Element) {
                     Element categoryElement = (Element) categoryList.item(i);
-                    printCategory(categoryElement, 0);
+                    String name = categoryElement.getElementsByTagName("name").item(0).getTextContent();
+                    System.out.println("Category: " + name);
                 }
             }
         } catch (Exception e) {
@@ -184,6 +189,29 @@ public class CategoryManager {
         }
     }
 
+    // Phương thức hiển thị chi tiết danh mục và các danh mục con
+    private void showCategoryDetails(Scanner scanner) {
+        try {
+            Document doc = XMLManager.loadXML(categoriesFile);
+            Element root = XMLManager.getElementByTagName(doc, "categories");
+
+            System.out.print("Enter the name of the category to view details: ");
+            String categoryName = scanner.nextLine();
+
+            Element categoryElement = findCategoryElement(root, categoryName);
+            if (categoryElement == null) {
+                System.out.println("Category not found.");
+                return;
+            }
+
+            // Hiển thị chi tiết danh mục và các danh mục con
+            printCategory(categoryElement, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // In chi tiết danh mục và các danh mục con với mức thụt lề phù hợp
     private void printCategory(Element categoryElement, int indentLevel) {
         String name = categoryElement.getElementsByTagName("name").item(0).getTextContent();
         String characteristicField = categoryElement.getElementsByTagName("characteristicField").item(0).getTextContent();
@@ -201,5 +229,4 @@ public class CategoryManager {
             }
         }
     }
-
 }

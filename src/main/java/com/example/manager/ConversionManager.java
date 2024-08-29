@@ -9,10 +9,12 @@ import java.util.Scanner;
 
 public class ConversionManager {
     private String conversionsFile;
+    private String categoriesFile;
     private String proposalsFile;
 
     public ConversionManager() {
         this.conversionsFile = "conversions.xml";
+        this.categoriesFile = "categories.xml";  // File chứa thông tin danh mục
         this.proposalsFile = "proposals.xml";
     }
 
@@ -186,6 +188,12 @@ public class ConversionManager {
 
     private void addConversionFactor(Scanner scanner) {
         try {
+            CategoryManager categoryManager = new CategoryManager();
+            System.out.println("-----------------------------");
+            System.out.println("List categories:");
+            categoryManager.listCategories();
+            System.out.println("-----------------------------");
+
             Document doc = XMLManager.loadXML(conversionsFile);
             Element root = XMLManager.getElementByTagName(doc, "conversionFactors");
 
@@ -365,6 +373,7 @@ public class ConversionManager {
         }
     }
 
+    // Phương thức để liệt kê các yếu tố chuyển đổi với tên danh mục
     private void listConversionFactors() {
         try {
             Document doc = XMLManager.loadXML(conversionsFile);
@@ -376,11 +385,53 @@ public class ConversionManager {
                 String category1 = conversionElement.getElementsByTagName("category1").item(0).getTextContent();
                 String category2 = conversionElement.getElementsByTagName("category2").item(0).getTextContent();
                 String factor = conversionElement.getElementsByTagName("factor").item(0).getTextContent();
-                System.out.println("Category1: " + category1 + ", Category2: " + category2 + ", Factor: " + factor);
+
+                // Lấy tên danh mục từ categories.xml
+                String category1Name = getCategoryName(category1);
+                String category2Name = getCategoryName(category2);
+
+                // Hiển thị tên danh mục và yếu tố chuyển đổi
+                System.out.println(category1Name + " and " + category2Name + ": Conversion Factor " + factor);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // Phương thức để lấy tên danh mục từ categories.xml
+    private String getCategoryName(String categoryName) {
+        try {
+            Document doc = XMLManager.loadXML(categoriesFile);
+            Element root = XMLManager.getElementByTagName(doc, "categories");
+
+            return findCategoryName(root, categoryName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Unknown Category"; // Nếu không tìm thấy, trả về "Unknown Category"
+    }
+
+    // Phương thức để tìm tên danh mục từ phần tử gốc, hỗ trợ tìm đệ quy
+    private String findCategoryName(Element root, String categoryName) {
+        NodeList categories = root.getElementsByTagName("category");
+        for (int i = 0; i < categories.getLength(); i++) {
+            Element category = (Element) categories.item(i);
+            String name = category.getElementsByTagName("name").item(0).getTextContent();
+
+            if (name.equals(categoryName)) {
+                return name; // Trả về nếu tìm thấy
+            }
+
+            // Nếu danh mục có các danh mục con, tìm đệ quy
+            NodeList subCategories = category.getElementsByTagName("subCategories");
+            if (subCategories.getLength() > 0) {
+                String foundName = findCategoryName((Element) subCategories.item(0), categoryName);
+                if (foundName != null) {
+                    return foundName;
+                }
+            }
+        }
+        return null; // Trả về null nếu không tìm thấy
     }
 
     private Element findConversionElement(Element root, String category1, String category2) {

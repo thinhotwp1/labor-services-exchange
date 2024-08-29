@@ -1,69 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <conversionFactors>
-                
-    
+            
     
     
     <conversionFactor>
-                                
+                        
         
+        <category1>Physic Music Lessons</category1>
+                        
         
-        <category1>category 1</category1>
-                                
-        
-        
-        <category2>category 2</category2>
-                                
-        
+        <category2>Mathematics</category2>
+                        
         
         <factor>2.0</factor>
-                            
-    
-    
-    </conversionFactor>
-                
-    
-    
-    <conversionFactor>
-                                
-        
-        
-        <category1>category 2</category1>
-                                
-        
-        
-        <category2>category 1</category2>
-                                
-        
-        
-        <factor>0.5</factor>
-                            
-    
+                    
     
     </conversionFactor>
             
     
-    
-
-
     <conversionFactor>
-        <category1>category 2</category1>
-        <category2>category 3</category2>
+                        
+        
+        <category1>Mathematics</category1>
+                        
+        
+        <category2>Physic Music Lessons</category2>
+                        
+        
+        <factor>0.5</factor>
+                    
+    
+    </conversionFactor>
+    
+    <conversionFactor>
+        <category1>Physic Music Lessons</category1>
+        <category2>new category</category2>
+        <factor>1.0</factor>
+    </conversionFactor>
+    <conversionFactor>
+        <category1>new category</category1>
+        <category2>Physic Music Lessons</category2>
+        <factor>1.0</factor>
+    </conversionFactor>
+    <conversionFactor>
+        <category1>Mathematics</category1>
+        <category2>new category</category2>
         <factor>0.5</factor>
     </conversionFactor>
     <conversionFactor>
-        <category1>category 3</category1>
-        <category2>category 2</category2>
+        <category1>new category</category1>
+        <category2>Mathematics</category2>
         <factor>2.0</factor>
-    </conversionFactor>
-    <conversionFactor>
-        <category1>category 1</category1>
-        <category2>category 3</category2>
-        <factor>1.0</factor>
-    </conversionFactor>
-    <conversionFactor>
-        <category1>category 3</category1>
-        <category2>category 1</category2>
-        <factor>1.0</factor>
     </conversionFactor>
 </conversionFactors>

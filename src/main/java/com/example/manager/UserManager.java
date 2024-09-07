@@ -1,5 +1,6 @@
 package com.example.manager;
 
+import com.example.config.UserCurrent;
 import com.example.model.Login;
 import com.example.model.TypeUser;
 import com.example.model.User;
@@ -34,11 +35,13 @@ public class UserManager {
                     authentication = handleAdminLogin(scanner);
                     login.setAuthentication(authentication);
                     login.setTypeUser(TypeUser.ADMIN);
+                    UserCurrent.setTypeUser(TypeUser.ADMIN);
                     break;
                 case 2:
                     authentication = handleUserLogin(scanner);
                     login.setAuthentication(authentication);
                     login.setTypeUser(TypeUser.USER);
+                    UserCurrent.setTypeUser(TypeUser.USER);
                     break;
                 default:
                     System.out.println("Invalid choice. Try again.");

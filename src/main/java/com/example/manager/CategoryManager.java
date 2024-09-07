@@ -1,5 +1,7 @@
 package com.example.manager;
 
+import com.example.config.UserCurrent;
+import com.example.model.TypeUser;
 import com.example.util.XMLManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,12 +33,24 @@ public class CategoryManager {
 
             switch (choice) {
                 case 1:
+                    if (UserCurrent.getCurrentUser() != TypeUser.ADMIN) {
+                        System.out.println("You are not admin !");
+                        break;
+                    }
                     addCategory(scanner);
                     break;
                 case 2:
+                    if (UserCurrent.getCurrentUser() != TypeUser.ADMIN) {
+                        System.out.println("You are not admin !");
+                        break;
+                    }
                     editCategory(scanner);
                     break;
                 case 3:
+                    if (UserCurrent.getCurrentUser() != TypeUser.ADMIN) {
+                        System.out.println("You are not admin !");
+                        break;
+                    }
                     deleteCategory(scanner);
                     break;
                 case 4:

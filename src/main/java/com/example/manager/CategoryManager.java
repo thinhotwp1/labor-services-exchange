@@ -21,38 +21,48 @@ public class CategoryManager {
         while (running) {
             System.out.println("-----------------------------");
             System.out.println("Category Management:");
-            System.out.println("1. Add Category");
-            System.out.println("2. Edit Category");
-            System.out.println("3. Delete Category");
-            System.out.println("4. List Categories");
-            System.out.println("5. Show Category Details");
-            System.out.println("6. Back");
+            if (UserCurrent.getCurrentUser() == TypeUser.ADMIN) {
+                System.out.println("1. Add Category");
+                System.out.println("2. Edit Category");
+                System.out.println("3. Delete Category");
+                System.out.println("4. List Categories");
+                System.out.println("5. Show Category Details");
+                System.out.println("6. Back");
+            }
+            if (UserCurrent.getCurrentUser() == TypeUser.USER) {
+                System.out.println("1. List Categories");
+                System.out.println("2. Show Category Details");
+                System.out.println("3. Back");
+            }
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
 
             switch (choice) {
                 case 1:
-                    if (UserCurrent.getCurrentUser() != TypeUser.ADMIN) {
-                        System.out.println("You are not admin !");
+                    if(UserCurrent.getCurrentUser() == TypeUser.ADMIN){
+                        addCategory(scanner);
+                        break;
+                    }else{
+                        listCategories();
                         break;
                     }
-                    addCategory(scanner);
-                    break;
                 case 2:
-                    if (UserCurrent.getCurrentUser() != TypeUser.ADMIN) {
-                        System.out.println("You are not admin !");
+                    if(UserCurrent.getCurrentUser() == TypeUser.ADMIN){
+                        editCategory(scanner);
+                        break;
+                    }else{
+                        showCategoryDetails(scanner);
                         break;
                     }
-                    editCategory(scanner);
-                    break;
                 case 3:
-                    if (UserCurrent.getCurrentUser() != TypeUser.ADMIN) {
-                        System.out.println("You are not admin !");
+                    if(UserCurrent.getCurrentUser() == TypeUser.ADMIN){
+                        deleteCategory(scanner);
+                        break;
+                    }else{
+                        running = false;
                         break;
                     }
-                    deleteCategory(scanner);
-                    break;
                 case 4:
                     listCategories();
                     break;

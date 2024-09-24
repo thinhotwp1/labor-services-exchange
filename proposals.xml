@@ -33,39 +33,105 @@
                     
     
     </proposal>
+            
+    
+    <proposal>
+                        
+        
+        <user>Jame Lee</user>
+                        
+        
+        <request>
+                                    
+            
+            <category>category 1</category>
+                                    
+            
+            <duration>4</duration>
+                                
+        
+        </request>
+                        
+        
+        <offer>
+                                    
+            
+            <category>category 3</category>
+                                    
+            
+            <duration>4</duration>
+                                
+        
+        </offer>
+                    
+    
+    </proposal>
+            
+    
+    <proposal>
+                        
+        
+        <user>Moe</user>
+                        
+        
+        <request>
+                                    
+            
+            <category>category 3</category>
+                                    
+            
+            <duration>4</duration>
+                                
+        
+        </request>
+                        
+        
+        <offer>
+                                    
+            
+            <category>category 2</category>
+                                    
+            
+            <duration>8</duration>
+                                
+        
+        </offer>
+                    
+    
+    </proposal>
         
     
     <proposal>
                 
-        <user>Jame Lee</user>
+        <user>admin</user>
                 
         <request>
                         
-            <category>category 1</category>
+            <category>Physic Music Lessons</category>
                         
-            <duration>4</duration>
+            <duration>5</duration>
                     
         </request>
                 
         <offer>
                         
-            <category>category 3</category>
+            <category>Mathematics</category>
                         
-            <duration>4</duration>
+            <duration>10</duration>
                     
         </offer>
             
     </proposal>
     
     <proposal>
-        <user>Moe</user>
+        <user>ADMIN</user>
         <request>
-            <category>category 3</category>
-            <duration>4</duration>
+            <category>Physic Music Lessons</category>
+            <duration>5</duration>
         </request>
         <offer>
-            <category>category 2</category>
-            <duration>8</duration>
+            <category>Mathematics</category>
+            <duration>10</duration>
         </offer>
     </proposal>
 </exchangeProposals>

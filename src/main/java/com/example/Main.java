@@ -22,7 +22,7 @@ public class Main {
             System.out.println("Main Menu:");
             System.out.println("1. Category Management");
             System.out.println("2. Geographic Area Management");
-            System.out.println("3. Conversion Factor Management");
+            System.out.println("3. Conversion Factor Management and Proposals");
             System.out.println("4. Exit");
 
             int choice = scanner.nextInt();
@@ -30,10 +30,6 @@ public class Main {
 
             switch (choice) {
                 case 1:
-//                    if (login.getTypeUser() != TypeUser.ADMIN) {
-//                        System.out.println("You are not admin. Invalid choice. Try again.");
-//                        break;
-//                    }
                     CategoryManager categoryManager = new CategoryManager();
                     categoryManager.manage(scanner);
                     break;
